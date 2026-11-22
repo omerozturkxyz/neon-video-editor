@@ -1,0 +1,1224 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Video Editor — Kodla Otonom Video Edit Sistemi</title>
+    <meta
+      name="description"
+      content="Premiere veya After Effects olmadan ham talking-head videoyu baştan sona kodla editleyen açık kaynak video edit sistemi, 13 repo, 26 skill ve özelleştirilebilir şablonlar."
+    />
+    <meta property="og:title" content="Neon Video Editor — Kodla Otonom Video Edit Sistemi" />
+    <meta
+      property="og:description"
+      content="Ham .MOV dosyanı ver: faster-whisper kesimi, HyperFrames motion grafikleri, gerçek SFX, -16 LUFS QA ve 26 açık kaynak skill tek pakette."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --surface: #f8fafc;
+        --border: #e2e8f0;
+        --ink: #0f172a;
+        --muted: #475569;
+        --accent: #2563eb;
+        --accent-soft: #eff6ff;
+        --dark: #0f172a;
+        --dark-surface: #1e293b;
+        --dark-border: #334155;
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        height: 62px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: -0.02em;
+      }
+
+      .brand-dot {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        background: var(--accent);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .nav-links {
+        display: none;
+        align-items: center;
+        gap: 22px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 18px;
+        border-radius: 9px;
+        border: 1px solid transparent;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #ffffff;
+      }
+
+      .btn-primary:hover {
+        background: #1d4ed8;
+      }
+
+      .btn-outline {
+        background: #ffffff;
+        color: var(--ink);
+        border-color: var(--border);
+      }
+
+      .btn-outline:hover {
+        background: var(--surface);
+        border-color: #cbd5e1;
+      }
+
+      .btn-sm {
+        padding: 7px 12px;
+        font-size: 13px;
+        border-radius: 8px;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 52px 0 56px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        border: 1px solid #bfdbfe;
+        border-radius: 999px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 16px 0 14px;
+        font-size: clamp(32px, 6vw, 54px);
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 1.08;
+      }
+
+      .lead {
+        max-width: 680px;
+        font-size: clamp(16px, 2.2vw, 18px);
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 28px;
+      }
+
+      /* Terminal Card */
+      .term-card {
+        background: var(--dark);
+        color: #f8fafc;
+        border: 1px solid var(--dark-border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .term-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 11px 16px;
+        background: var(--dark-surface);
+        border-bottom: 1px solid var(--dark-border);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      .mode-tabs {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .mode-tab {
+        border: 1px solid var(--dark-border);
+        background: transparent;
+        color: #cbd5e1;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mode-tab.active {
+        background: var(--accent);
+        color: #ffffff;
+        border-color: var(--accent);
+      }
+
+      .term-body {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .code-line {
+        margin: 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        color: #f1f5f9;
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .code-line .c-prompt {
+        color: #60a5fa;
+        font-weight: 700;
+      }
+
+      .code-line .c-comment {
+        color: #64748b;
+      }
+
+      .term-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 12px;
+        border-top: 1px solid var(--dark-border);
+        font-size: 12.5px;
+        color: #94a3b8;
+      }
+
+      /* Stats */
+      .stats-grid {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .stat-box {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 15px 16px;
+      }
+
+      .stat-k {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .stat-v {
+        margin-top: 4px;
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Sections */
+      section.block {
+        padding: 60px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      section.block.alt {
+        background: var(--surface);
+      }
+
+      .sec-kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      h2 {
+        margin: 6px 0 8px;
+        font-size: clamp(24px, 4vw, 34px);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.14;
+      }
+
+      .sec-sub {
+        margin: 0 0 26px;
+        color: var(--muted);
+        font-size: 15px;
+        max-width: 660px;
+      }
+
+      /* Pipeline */
+      .steps-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .step-card {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .step-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .step-num {
+        padding: 3px 9px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-radius: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .step-tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .step-title {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+      }
+
+      .step-desc {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .step-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 2px;
+      }
+
+      .pill {
+        padding: 3px 8px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      /* Skills Filter & Grid */
+      .filter-bar {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 7px 12px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        cursor: pointer;
+      }
+
+      .chip.active {
+        background: var(--ink);
+        color: #ffffff;
+        border-color: var(--ink);
+      }
+
+      .search-input {
+        width: 100%;
+        max-width: 340px;
+        padding: 9px 13px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #ffffff;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--ink);
+      }
+
+      .repos-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .repo-card {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .repo-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .repo-name {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+      }
+
+      .repo-cat {
+        padding: 3px 8px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-radius: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .repo-desc {
+        margin: 8px 0 0;
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+
+      .repo-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .repo-link:hover {
+        background: var(--ink);
+        color: #ffffff;
+        border-color: var(--ink);
+      }
+
+      /* Templates */
+      .tpl-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .tpl-tab {
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #ffffff;
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .tpl-tab.active {
+        background: var(--accent);
+        color: #ffffff;
+        border-color: var(--accent);
+      }
+
+      .tpl-box {
+        background: var(--dark);
+        border: 1px solid var(--dark-border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .tpl-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 11px 16px;
+        background: var(--dark-surface);
+        border-bottom: 1px solid var(--dark-border);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: #cbd5e1;
+      }
+
+      .tpl-pre {
+        margin: 0;
+        padding: 18px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        line-height: 1.65;
+        color: #f1f5f9;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-height: 420px;
+        overflow-y: auto;
+      }
+
+      footer {
+        padding: 28px 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(90px);
+        background: var(--dark);
+        color: #ffffff;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        font-weight: 700;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+        transition: transform 0.2s ease;
+        z-index: 90;
+      }
+
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (min-width: 720px) {
+        .nav-links {
+          display: flex;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .steps-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .repos-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .filter-bar {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+
+      @media (min-width: 980px) {
+        .steps-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="#top">
+          <span class="brand-dot" aria-hidden="true">✦</span>
+          <span>Neon Video Editor</span>
+        </a>
+        <nav class="nav-links" aria-label="Bölümler">
+          <a href="#pipeline">6 Adım</a>
+          <a href="#skills">26 Skill</a>
+          <a href="#templates">Şablonlar</a>
+        </nav>
+        <a class="btn btn-outline btn-sm repo-url-link" href="#top" target="_blank" rel="noopener">
+          GitHub Reposu ↗
+        </a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <span class="badge">AÇIK KAYNAK · KODLA OTONOM VİDEO KURGU REHBERİ</span>
+          <h1>Ham videodan final MP4'e tamamen kodla kurgu.</h1>
+          <p class="lead">
+            Premiere Pro veya After Effects açmadan: ham talking-head videonu ver; transkript,
+            hatalı çekim ve boşluk kesimi, B-roll eşleştirme, kelimeye kilitli motion grafikleri,
+            gerçek SFX ve <strong>-16 LUFS</strong> ses testi tek ajan akışında tamamlansın.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary repo-url-link" href="#top" target="_blank" rel="noopener">
+              GitHub Reposunu Aç →
+            </a>
+            <a class="btn btn-outline" href="#skills">26 Skill Kataloğunu İncele ↓</a>
+          </div>
+
+          <div class="term-card" aria-label="Hızlı kurulum komutu">
+            <div class="term-head">
+              <span>HIZLI KURULUM · 3 DAKİKA</span>
+              <div class="mode-tabs">
+                <button class="mode-tab active" data-install="agents" type="button">
+                  Antigravity / Gemini
+                </button>
+                <button class="mode-tab" data-install="claude" type="button">
+                  + Claude Code
+                </button>
+              </div>
+            </div>
+            <div class="term-body">
+              <pre class="code-line" id="install-code"></pre>
+              <div class="term-foot">
+                <span>10 açık kaynak motion reposunu çeker ve 20 workspace skill'ini otomatik bağlar.</span>
+                <button class="btn btn-primary btn-sm" id="copy-install-btn" type="button">
+                  Komutu Kopyala
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-k">AÇIK KAYNAK REPO</div>
+              <div class="stat-v">13</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-k">KURULU SKİLL</div>
+              <div class="stat-v">26</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-k">GEÇİŞ ATLASI</div>
+              <div class="stat-v">24</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-k">YAYIN SES HEDEFİ</div>
+              <div class="stat-v">-16 LUFS</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block alt" id="pipeline">
+        <div class="container">
+          <div class="sec-kicker">MİMARİ AKIŞ</div>
+          <h2>Ham dosyadan final MP4'e 6 adım</h2>
+          <p class="sec-sub">
+            Tüm adımlar deterministik scriptler ve yerel CLI araçlarıyla çalışır; görsel stil,
+            renk ve tipografi kurallarını kendi <code>MEMORY.md</code> dosyan üzerinden özgürce
+            tanımlarsın.
+          </p>
+
+          <div class="steps-grid">
+            <article class="step-card">
+              <div class="step-top">
+                <span class="step-num">#00</span>
+                <span class="step-tag">GİRDİ &amp; SENKRON</span>
+              </div>
+              <div class="step-title">HDR → SDR &amp; Harici Mic Kilidi</div>
+              <p class="step-desc">
+                4K HLG kayıtları Apple native <code>avconvert</code> ile temiz Rec.709 SDR'ye
+                çevrilir; ayrı harici mikrofon kaydı varsa 1 ms RMS zarf korelasyonuyla sıfır kare
+                kaymayla senkronlanır.
+              </p>
+              <div class="step-pills">
+                <span class="pill">avconvert</span>
+                <span class="pill">ffmpeg-skill</span>
+                <span class="pill">1 ms RMS sync</span>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <div class="step-top">
+                <span class="step-num">#01</span>
+                <span class="step-tag">KELİME SAATİ</span>
+              </div>
+              <div class="step-title">Transkript, Take Seçimi &amp; Kesim</div>
+              <p class="step-desc">
+                <code>faster-whisper</code> her kelimenin başlangıç/bitiş milisaniyesini çıkarır.
+                Çoklu çekimden en temiz tekrarlar seçilir, hatalı çekimler ve
+                <code>&gt; 0.20 sn</code> boşluklar kesilir.
+              </p>
+              <div class="step-pills">
+                <span class="pill">faster-whisper</span>
+                <span class="pill">&gt; 0.20s kesim</span>
+                <span class="pill">0.5s keyframe</span>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <div class="step-top">
+                <span class="step-num">#02</span>
+                <span class="step-tag">HİKÂYE &amp; ÇEŞİTLİLİK</span>
+              </div>
+              <div class="step-title">Storyboard &amp; Gerçek B-Roll</div>
+              <p class="step-desc">
+                Sahne bazlı hikâye akışı çıkarılır; 24 Geçiş Atlası ve
+                <code>variety_audit.py</code> ile ardışık tekrar sıfırlanır, her cümleye uygun
+                ekran kaydı veya görsel eşlenir.
+              </p>
+              <div class="step-pills">
+                <span class="pill">saas-motion-video</span>
+                <span class="pill">vox-explainer</span>
+                <span class="pill">motion-broll</span>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <div class="step-top">
+                <span class="step-num">#03</span>
+                <span class="step-tag">HTML + GSAP + CANVAS</span>
+              </div>
+              <div class="step-title">Kelimeye Kilitli Motion Grafikler</div>
+              <p class="step-desc">
+                Her sahne HTML, CSS, GSAP ve Canvas 2D ile kodlanır. Animasyonlar ve altyazılar
+                kendi <code>MEMORY.md</code> stil kurallarına göre konuşulan kelimelerin tam
+                milisaniyesine kilitlenir.
+              </p>
+              <div class="step-pills">
+                <span class="pill">hyperframes</span>
+                <span class="pill">product-launch-motion</span>
+                <span class="pill">GSAP timeline</span>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <div class="step-top">
+                <span class="step-num">#04</span>
+                <span class="step-tag">MÜZİK &amp; FOLEY</span>
+              </div>
+              <div class="step-title">Vokal Oyulmuş BGM &amp; Gerçek SFX</div>
+              <p class="step-desc">
+                <code>1200–2800 Hz</code> aralığı oyulmuş arka plan müziği konuşma altına oturur. 3
+                çakışmasız kanalda yalnızca gerçek kayıtlı CC0/telifsiz foley SFX kullanılır —
+                sıfır yapay bip.
+              </p>
+              <div class="step-pills">
+                <span class="pill">sound-effects</span>
+                <span class="pill">media-use</span>
+                <span class="pill">3 SFX kanalı</span>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <div class="step-top">
+                <span class="step-num">#05</span>
+                <span class="step-tag">OTOMATİK SELF-QA</span>
+              </div>
+              <div class="step-title">Kare Tarama &amp; EBU R128 Testi</div>
+              <p class="step-desc">
+                Teslim öncesi <code>hyperframes check</code>, görsel contact-sheet kontrolü ve
+                final MP4 üzerinde stereo &amp; mono <code>ffmpeg ebur128</code> ölçümü
+                (<code>-16 LUFS</code>, true peak <code>&lt; -4.0 dBFS</code>) çalıştırılır.
+              </p>
+              <div class="step-pills">
+                <span class="pill">hyperframes-cli</span>
+                <span class="pill">ebur128</span>
+                <span class="pill">0 hata</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="skills">
+        <div class="container">
+          <div class="sec-kicker">AÇIK KAYNAK EKOSİSTEM</div>
+          <h2>13 Repo &amp; 26 Skill Kataloğu</h2>
+          <p class="sec-sub">
+            Aşağıdaki repoların tamamı <code>install-skills.sh</code> ile tek komutla hafif şekilde
+            kurulabilir veya tek tek incelenebilir.
+          </p>
+
+          <div class="filter-bar">
+            <div class="chips" id="cat-chips">
+              <button class="chip active" data-cat="all" type="button">Tümü (13)</button>
+              <button class="chip" data-cat="core" type="button">Ana Motorlar (3)</button>
+              <button class="chip" data-cat="talking" type="button">Talking-Head &amp; B-Roll (4)</button>
+              <button class="chip" data-cat="craft" type="button">Stil &amp; Motion Craft (5)</button>
+              <button class="chip" data-cat="reverse" type="button">Tersine Mühendislik (1)</button>
+            </div>
+            <input
+              class="search-input"
+              id="skill-search"
+              type="search"
+              placeholder="Skill veya repo ara (ör. vox, ffmpeg, 3d)..."
+              aria-label="Skill veya repo ara"
+            />
+          </div>
+
+          <div class="repos-grid" id="repos-grid"></div>
+        </div>
+      </section>
+
+      <section class="block alt" id="templates">
+        <div class="container">
+          <div class="sec-kicker">ÖZELLEŞTİRİLEBİLİR BAŞLANGIÇ DOSYALARI</div>
+          <h2>Nötr Prompt &amp; Kurgu Şablonları</h2>
+          <p class="sec-sub">
+            Kendi renklerini, fontlarını ve görsel tarzını <code>MEMORY.md</code> içine yazıp
+            aşağıdaki ana prompt ile projeyi başlatabilirsin.
+          </p>
+
+          <div class="tpl-tabs" id="tpl-tabs">
+            <button class="tpl-tab active" data-tpl="prompt" type="button">Ana Edit Prompt'u</button>
+            <button class="tpl-tab" data-tpl="memory" type="button">MEMORY.md Şablonu</button>
+            <button class="tpl-tab" data-tpl="agents" type="button">AGENTS.md Kuralları</button>
+            <button class="tpl-tab" data-tpl="audio" type="button">master-audio.sh</button>
+          </div>
+
+          <div class="tpl-box">
+            <div class="tpl-bar">
+              <span id="tpl-filename">templates/prompts/neon-edit-prompt.md</span>
+              <button class="btn btn-primary btn-sm" id="copy-tpl-btn" type="button">
+                Şablonu Kopyala
+              </button>
+            </div>
+            <pre class="tpl-pre" id="tpl-content"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-inner">
+        <span>Neon Video Editor — Kodla Otonom Video Edit Sistemi · MIT Lisansı</span>
+        <a class="btn btn-outline btn-sm repo-url-link" href="#top" target="_blank" rel="noopener">
+          Kaynak Kodu GitHub'da Gör ↗
+        </a>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Panoya kopyalandı ✓</div>
+
+    <script>
+      const hostParts = window.location.hostname.endsWith(".github.io")
+        ? window.location.hostname.replace(".github.io", "")
+        : "";
+      const pathRepo = window.location.pathname.split("/").filter(Boolean)[0] || "neon-video-editor";
+      const REPO_URL = hostParts ? `https://github.com/${hostParts}/${pathRepo}` : "https://github.com";
+      const CLONE_URL = hostParts ? `${REPO_URL}.git` : "<REPO_URL>.git";
+
+      document.querySelectorAll(".repo-url-link").forEach((el) => {
+        el.href = REPO_URL;
+      });
+
+      const REPOS = [
+        {
+          name: "heygen-com/hyperframes",
+          cat: "core",
+          catLabel: "Ana Motor",
+          url: "https://github.com/heygen-com/hyperframes",
+          desc: "HTML/CSS/GSAP/Canvas 2D'yi doğrudan MP4'e render eden ana motor; ~450 hazır component registry, check, snapshot, preview ve media-use.",
+          skills: ["hyperframes", "hyperframes-cli", "hyperframes-registry", "media-use", "reverse-any-video", "style-sampling"],
+        },
+        {
+          name: "kajisho5/ffmpeg-skill",
+          cat: "core",
+          catLabel: "Ana Motor",
+          url: "https://github.com/kajisho5/ffmpeg-skill",
+          desc: "42 yerel FFmpeg iş akışı: sessizlik kesme, harici mikrofon senkronu, HDR→SDR dönüşümü, stereo/mono ebur128 loudness ve platform export.",
+          skills: ["ffmpeg-skill"],
+        },
+        {
+          name: "SYSTRAN/faster-whisper",
+          cat: "core",
+          catLabel: "Ana Motor",
+          url: "https://github.com/SYSTRAN/faster-whisper",
+          desc: "4-6× hızlı yerel konuşma-metin motoru: Türkçe yüksek doğrulukta milisaniye bazlı kelime zaman damgaları (--word-timestamps).",
+          skills: ["faster-whisper"],
+        },
+        {
+          name: "tugrawork-creator/saas-motion-kit",
+          cat: "talking",
+          catLabel: "Talking-Head & B-Roll",
+          url: "https://github.com/tugrawork-creator/saas-motion-kit",
+          desc: "Doğrudan HyperFrames için anti-slop hareket sistemi: 24 Geçiş Atlası, 101 görsel tema, tone matrix ve variety_audit.py çeşitlilik denetimi.",
+          skills: ["saas-motion-video"],
+        },
+        {
+          name: "heygen-com/hyperframes-community-skills",
+          cat: "talking",
+          catLabel: "Talking-Head & B-Roll",
+          url: "https://github.com/heygen-com/hyperframes-community-skills",
+          desc: "Resmi HyperFrames topluluk paketi: Vox tarzı editoryal anlatım, 3D kamera altyazıları, p5 boyama ve çift ekran telefon formatı.",
+          skills: ["vox-explainer", "camera-3d-captions", "p5-paint-animation", "duo", "session-story", "prod-by-claude"],
+        },
+        {
+          name: "Barty-Bart/motion-graphics",
+          cat: "talking",
+          catLabel: "Talking-Head & B-Roll",
+          url: "https://github.com/Barty-Bart/motion-graphics",
+          desc: "Konuşma metnine senkron kesintisiz B-roll, SAM 2 ile konuşmacı arkasına yazı koyma ve CC0 kütüphaneyle -16 LUFS ölçülmüş ses tasarımı.",
+          skills: ["motion-broll", "object-separation", "explainer-high-energy", "explainer-engaging", "sound-effects"],
+        },
+        {
+          name: "latent-spaces/brag",
+          cat: "talking",
+          catLabel: "Talking-Head & B-Roll",
+          url: "https://github.com/latent-spaces/brag",
+          desc: "Mevcut kod projeni okuyup ekran görüntüsü almadan kısa, paylaşılabilir lansman videosu üreten /brag skill'i.",
+          skills: ["brag"],
+        },
+        {
+          name: "lemomo-ai/lemo-opuscar",
+          cat: "craft",
+          catLabel: "Stil & Motion Craft",
+          url: "https://github.com/lemomo-ai/lemo-opuscar",
+          desc: "Tamamen kodla üretilen 99 sinematik film stili (blueprint, bauhaus, ukiyo-e, exploded teardown, dark documentary) + yönetmen kuralları.",
+          skills: ["lemo-opuscar"],
+        },
+        {
+          name: "AbubakrChan/product-launch-motion",
+          cat: "craft",
+          catLabel: "Stil & Motion Craft",
+          url: "https://github.com/AbubakrChan/product-launch-motion",
+          desc: "Dribbble seviyesi ürün lansman prensipleri: kesintisiz tek şekil dönüşümü, kapalı form yay fiziği, hıza göre eğilen imleç ve ritme kilitli SFX.",
+          skills: ["product-launch-motion"],
+        },
+        {
+          name: "howseen-ai/claude-motion-design",
+          cat: "craft",
+          catLabel: "Stil & Motion Craft",
+          url: "https://github.com/howseen-ai/claude-motion-design",
+          desc: "After Effects olmadan saf HTML/JS seek(t) motion design hattı, alt-kare hareket bulanıklığı ve ses efektlerinin pik karesine oturtulması.",
+          skills: ["motion-design"],
+        },
+        {
+          name: "tuzhechen2005/opus-video-skills",
+          cat: "craft",
+          catLabel: "Stil & Motion Craft",
+          url: "https://github.com/tuzhechen2005/opus-video-skills",
+          desc: "Kinetik tipografi + Three.js showreel üretimi (kinetic-reel) ve suluboya + mürekkep el boyaması animasyonlar (painted-animation).",
+          skills: ["kinetic-reel", "painted-animation"],
+        },
+        {
+          name: "shadcn-labs/snapcn",
+          cat: "craft",
+          catLabel: "Stil & Motion Craft",
+          url: "https://github.com/shadcn-labs/snapcn",
+          desc: "Ürün demoları için terminal simülatörü, AI chat akışı, cihaz çerçevesi ve karaoke altyazı bileşen kataloğu.",
+          skills: ["snapcn"],
+        },
+        {
+          name: "JuneYaooo/rea-video",
+          cat: "reverse",
+          catLabel: "Tersine Mühendislik",
+          url: "https://github.com/JuneYaooo/rea-video",
+          desc: "Herhangi bir referans videoyu çekim çekim analiz edip (gerçek çekim/AI/kod/ses/ritim) açık VIDEO.md üretim planına döken tersine mühendislik aracı.",
+          skills: ["rea-video"],
+        },
+      ];
+
+      const TEMPLATES = {
+        prompt: {
+          file: "templates/prompts/neon-edit-prompt.md",
+          text: `assets/ klasörüne ham talking-head videomu (ve varsa harici mikrofon kaydımı) yükledim.
+Videoda metni birden fazla kez okudum; çekim sırasında bazı cümleleri ufak değiştirmiş olabilirim.
+
+Önce kendi stilimi tanımladığım MEMORY.md ve AGENTS.md dosyalarını oku, ardından şu 6 adımı baştan sona otonom uygula:
+1. Ses Senkronu & Take Seçimi: Ayrı harici mikrofon kaydı varsa 1 ms RMS zarf korelasyonuyla kameraya kilitle; faster-whisper kelime zamanlarıyla en iyi take'leri seç, hatalı tekrarları ve >0.20 sn boşlukları kes. Ham HLG görüntüyü Rec.709 SDR (30 fps CFR, 0.5s keyframe) yapıp agresif afftdn kullanmadan temiz stüdyo vokal mastering uygula.
+2. Storyboard & Çeşitlilik: MEMORY.md içindeki yerleşim ve stil tercihlerime göre sahne planı çıkar; ardışık iki sahnede aynı geçişi tekrarlama (variety_audit.py ile doğrula).
+3. Kodla Motion Grafikler (HyperFrames): Her sahneyi HTML/CSS/GSAP/Canvas 2D ile kodla; animasyonları ve altyazıları söylediğim gerçek kelimelerin zaman damgalarına kilitle.
+4. Müzik & 3-Kanallı Gerçek SFX: Vokal frekansları oyulmuş arka plan müziği + yalnızca gerçek kayıtlı CC0/telifsiz foley SFX yerleştir (yapay bip kullanma).
+5. Görsel & Teknik Self-QA: Snapshot contact-sheet kontrolü + hyperframes check (0 hata).
+6. Final Render & EBU R128: Final out.mp4'ü stereo ve mono ebur128 ile ölç (-16.0 ile -17.0 LUFS, true peak < -4.0 dBFS).`,
+        },
+        memory: {
+          file: "templates/MEMORY.md",
+          text: `# Brand & Video Memory Şablonu (Kendi Markana Göre Doldur)
+
+- Kanal / Marka: <KANAL_ADIN>
+- Format: 9:16 (1080x1920, 30 fps CFR, Rec.709 SDR)
+- Renk Paleti: Zemin <ANA_ARKA_PLAN_HEX> | Koyu <KOYU_ZEMIN_HEX> | Metin <METIN_HEX> | Vurgu <VURGU_HEX>
+- Tipografi: Başlık <BASLIK_FONTUN> | Vurgu <VURGU_FONTUN> | Kod/Sayı <MONO_FONTUN>
+- Ekran Yerleşimi: <Split / Tam Ekran / Kamera oranı tercihlerin>
+- Altyazı Stili: <Konum, boyut ve kapsül tercihin — yüz ve grafiklerle sıfır çakışma>
+- Türkçe Kuralı: CSS text-transform: uppercase yasak; İ, Ş, Ğ, Ü, Ö, Ç doğrudan yazılır.
+- Müzik & Ses: <Müzik tarzın> · Vokal oyulmuş BGM · Gerçek CC0 SFX · Final stereo -16 LUFS, True Peak < -4.0 dBFS.`,
+        },
+        agents: {
+          file: "templates/AGENTS.md",
+          text: `# Video Workspace Guide
+
+- Her videoya başlamadan önce mutlaka proje kökündeki MEMORY.md dosyasını oku ve oradaki renk/font/stil kurallarına uy.
+- Kısa videolar 3 haneli numaralı klasörlerde tutulur (001-ilk-video, 002-ikinci-video, ...).
+- Türkçe büyük harflerde asla CSS text-transform: uppercase kullanma; İ, Ş, Ğ, Ü, Ö, Ç doğrudan yaz.
+- Kurulu .agents/skills/ altındaki skill'leri senaryoya göre otomatik devreye al:
+  * Talking-head: vox-explainer, motion-broll, object-separation, camera-3d-captions, sound-effects
+  * Çeşitlilik: saas-motion-video (24 geçiş atlası, variety_audit.py)
+  * Ana motorlar: hyperframes, hyperframes-cli, hyperframes-registry, ffmpeg-skill, faster-whisper`,
+        },
+        audio: {
+          file: "templates/scripts/master-audio.sh",
+          text: `# 1. 4K HLG -> Apple native Rec.709 SDR (macOS)
+./templates/scripts/master-audio.sh sdr raw.MOV raw_sdr.mov
+
+# 2. HyperFrames için hızlı arama (0.5 sn keyframe, sıfır B-frame, bt709)
+./templates/scripts/master-audio.sh fast talking-head.mp4 talking-head-fast.mp4
+
+# 3. Stereo & Mono EBU R128 loudness ölçümü
+./templates/scripts/master-audio.sh check out.mp4
+
+# 4. Lossless video (-c:v copy) + 2-pass loudnorm (-16.2 LUFS / -4.0 dBFS)
+./templates/scripts/master-audio.sh norm out.mp4 out_mastered.mp4`,
+        },
+      };
+
+      const toastEl = document.getElementById("toast");
+      let toastTimer;
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2000);
+      }
+
+      async function copyText(str, msg) {
+        try {
+          await navigator.clipboard.writeText(str);
+          showToast(msg || "Panoya kopyalandı ✓");
+        } catch {
+          showToast("Kopyalamak için metni seçin");
+        }
+      }
+
+      let activeInstall = "agents";
+      function renderInstall() {
+        const flag = activeInstall === "claude" ? " --claude" : "";
+        document.getElementById("install-code").innerHTML =
+          `<span class="c-prompt">$</span> git clone ${CLONE_URL}\n` +
+          `<span class="c-prompt">$</span> cd ${pathRepo} &amp;&amp; chmod +x install-skills.sh &amp;&amp; ./install-skills.sh${flag}\n` +
+          `<span class="c-comment"># Kendi MEMORY.md dosyanı doldurup templates/prompts/neon-edit-prompt.md ile başla!</span>`;
+      }
+
+      document.querySelectorAll(".mode-tab").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".mode-tab").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeInstall = btn.dataset.install;
+          renderInstall();
+        });
+      });
+
+      document.getElementById("copy-install-btn").addEventListener("click", () => {
+        const flag = activeInstall === "claude" ? " --claude" : "";
+        copyText(
+          `git clone ${CLONE_URL}\ncd ${pathRepo} && chmod +x install-skills.sh && ./install-skills.sh${flag}`,
+          "Kurulum komutu kopyalandı ✓"
+        );
+      });
+
+      let currentCat = "all";
+      let currentQuery = "";
+      const reposGrid = document.getElementById("repos-grid");
+
+      function renderRepos() {
+        const q = currentQuery.trim().toLowerCase();
+        const filtered = REPOS.filter((r) => {
+          const catOk = currentCat === "all" || r.cat === currentCat;
+          const qOk =
+            !q ||
+            r.name.toLowerCase().includes(q) ||
+            r.desc.toLowerCase().includes(q) ||
+            r.skills.some((s) => s.toLowerCase().includes(q));
+          return catOk && qOk;
+        });
+
+        reposGrid.innerHTML = filtered
+          .map(
+            (r) => `
+          <article class="repo-card">
+            <div>
+              <div class="repo-head">
+                <div class="repo-name">${r.name}</div>
+                <span class="repo-cat">${r.catLabel}</span>
+              </div>
+              <p class="repo-desc">${r.desc}</p>
+              <div class="step-pills" style="margin-top: 12px">
+                ${r.skills.map((s) => `<span class="pill">/${s}</span>`).join("")}
+              </div>
+            </div>
+            <a class="repo-link" href="${r.url}" target="_blank" rel="noopener">
+              <span>GitHub'da Gör</span>
+              <span>↗</span>
+            </a>
+          </article>
+        `
+          )
+          .join("");
+      }
+
+      document.querySelectorAll("#cat-chips .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          document.querySelectorAll("#cat-chips .chip").forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          currentCat = chip.dataset.cat;
+          renderRepos();
+        });
+      });
+
+      document.getElementById("skill-search").addEventListener("input", (e) => {
+        currentQuery = e.target.value;
+        renderRepos();
+      });
+
+      let activeTpl = "prompt";
+      function renderTpl() {
+        const t = TEMPLATES[activeTpl];
+        document.getElementById("tpl-filename").textContent = t.file;
+        document.getElementById("tpl-content").textContent = t.text;
+      }
+
+      document.querySelectorAll("#tpl-tabs .tpl-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll("#tpl-tabs .tpl-tab").forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          activeTpl = tab.dataset.tpl;
+          renderTpl();
+        });
+      });
+
+      document.getElementById("copy-tpl-btn").addEventListener("click", () => {
+        copyText(TEMPLATES[activeTpl].text, "Şablon kopyalandı ✓");
+      });
+
+      renderInstall();
+      renderRepos();
+      renderTpl();
+    </script>
+  </body>
+</html>
