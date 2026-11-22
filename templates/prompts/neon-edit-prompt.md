@@ -16,9 +16,9 @@ Videoda metni birden fazla kez okudum; çekim sırasında bazı cümleleri ufak 
    - Hatalı çekimleri ve `> 0.20 sn` boşlukları kes; ham HLG görüntüyü Rec.709 SDR (`30 fps CFR`, hızlı arama için `0.5 sn` keyframe `-g 15 -bf 0`) yap ve agresif `afftdn` kullanmadan temiz stüdyo vokal mastering ile master konuşmacı videosunu üret.
    - Çekim sırasında yaptığım kelime değişikliklerini birebir koru.
 
-2. **Hikâye & Çeşitlilik Planı (`STORYBOARD.md`):**
-   - `MEMORY.md` içindeki yerleşim ve stil tercihlerime göre sahne planını çıkar.
-   - Ardışık iki sahnede asla aynı geçişi kullanma; `saas-motion-video` geçiş atlasından farklı geçiş aileleri seç ve `variety_audit.py` ile doğrula.
+2. **Hikâye Planı & 3 Katmanlı Gerçek B-Roll (`STORYBOARD.md` + `SOURCES.md`):**
+   - `MEMORY.md` içindeki yerleşim ve stil tercihlerime göre sahne planını çıkar; ardışık iki sahnede asla aynı geçişi tekrarlama (`saas-motion-video` + `variety_audit.py`).
+   - Konuşmada geçen gerçek makaleler/dokümanlar için `real-broll-capture` ile `2×` Retina ekran görüntüsü yakala, bahsedilen siteler için canlı kaydırmalı + imleçli dikey `30 fps CFR` ekran kaydı MP4'ü kaydet, yalnızca gerçek görüntü olmayan yerlerde sıfırdan AI/kod sahnesi üret. Tüm kaynakları `SOURCES.md` dosyasına işle.
 
 3. **Kodla Motion Grafikler (`HyperFrames`):**
    - Her sahneyi HTML + CSS + GSAP + Canvas 2D ile kodla; tüm animasyonları ve altyazıları söylediğim gerçek kelimelerin zaman damgalarına milisaniye bazında kilitle.

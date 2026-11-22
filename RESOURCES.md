@@ -1,6 +1,6 @@
-# 13 Açık Kaynak Motion Design & Video Edit Reposu + 26 Skill Kataloğu
+# 14 Açık Kaynak Motion Design, Ekran Kaydı & Video Edit Reposu + 28 Skill Kataloğu
 
-Bu liste, kodla otonom video üretim hattında kullanılan tüm açık kaynaklı motorları, topluluk skill'lerini ve hangi sahnede hangisinin devreye girdiğini tek bakışta sunar.
+Bu liste, kodla otonom video üretim hattında kullanılan tüm açık kaynaklı motorları, gerçek kaynak / canlı ekran kaydı araçlarını, topluluk skill'lerini ve hangi sahnede hangisinin devreye girdiğini tek bakışta sunar.
 
 ---
 
@@ -8,13 +8,22 @@ Bu liste, kodla otonom video üretim hattında kullanılan tüm açık kaynaklı
 
 | Repo | İçerdiği Skill'ler | Rol & Katkı |
 | --- | --- | --- |
-| [**heygen-com/hyperframes**](https://github.com/heygen-com/hyperframes) | `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use`, `reverse-any-video`, `style-sampling` | HTML/CSS/GSAP/Canvas 2D'yi doğrudan MP4'e çeviren ana render motoru, ~450 hazır component/block registry, `check`, `snapshot`, `preview`, `render` ve medya toplama araçları |
+| [**heygen-com/hyperframes**](https://github.com/heygen-com/hyperframes) | `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use`, `reverse-any-video`, `style-sampling` | HTML/CSS/GSAP/Canvas 2D'yi doğrudan MP4'e render eden ana motor, ~450 hazır component/block registry, `check`, `snapshot`, `preview`, `render` ve medya toplama araçları |
 | [**kajisho5/ffmpeg-skill**](https://github.com/kajisho5/ffmpeg-skill) | `ffmpeg-skill` | 42 yerel FFmpeg aracı: kesme, birleştirme, reframe, sessizlik temizleme, ses senkronu, HDR→SDR, stereo/mono `ebur128` loudness |
 | [**SYSTRAN/faster-whisper**](https://github.com/SYSTRAN/faster-whisper) | `faster-whisper` | Yerel konuşma-metin motoru: milisaniye hassasiyetinde kelime zaman damgaları (`--word-timestamps`), Türkçe yüksek doğruluk |
 
 ---
 
-## 2. HyperFrames & Talking-Head Motion Uzantıları (Öncelikli)
+## 2. Gerçek Kaynak Yakalama & Canlı Site Ekran Kaydı (2 Skill)
+
+| Repo / Kaynak | Kurulan Skill'ler | Rol & Neden Önemli |
+| --- | --- | --- |
+| [**Dahili `skills/real-broll-capture`**](./skills/real-broll-capture/SKILL.md) | `real-broll-capture` | Uydurma CSS site maketlerini yasaklar: gerçek makale/doküman/repoları `2×` Retina PNG yakalar ve bahsedilen sitelerin canlı kaydırmalı + macOS imleçli dikey (`1080×1920`, `30 fps CFR bt709`, `-g 15 -bf 0`) ekran kaydı MP4'lerini üretir |
+| [**digitalsamba/claude-code-video-toolkit**](https://github.com/digitalsamba/claude-code-video-toolkit) | `playwright-recording` | Playwright ile web uygulaması akışlarını otomatik çerez temizliği, özel imleç/tıklama enjeksiyonu ve WebM→MP4 FFmpeg hattıyla kaydeder |
+
+---
+
+## 3. HyperFrames & Talking-Head Motion Uzantıları (Öncelikli)
 
 | Repo | Kurulan Skill'ler | Rol & Neden Önemli |
 | --- | --- | --- |
@@ -25,7 +34,7 @@ Bu liste, kodla otonom video üretim hattında kullanılan tüm açık kaynaklı
 
 ---
 
-## 3. Üst Düzey Motion Craft, Stil Kütüphaneleri & Tersine Mühendislik
+## 4. Üst Düzey Motion Craft, Stil Kütüphaneleri & Tersine Mühendislik
 
 | Repo | Kurulan Skill'ler | Rol & Neden Önemli |
 | --- | --- | --- |
@@ -38,8 +47,9 @@ Bu liste, kodla otonom video üretim hattında kullanılan tüm açık kaynaklı
 
 ---
 
-## 4. Hangi İhtiyaçta Hangi Skill Kullanılır?
+## 5. Hangi İhtiyaçta Hangi Skill Kullanılır?
 
+- **Gerçek makaleler, resmi dokümanlar ve canlı site ekran kayıtları (kaydırma + imleçli MP4) yakalarken:** `real-broll-capture` + `playwright-recording`
 - **Talking-head videoda üst yarıya zengin editoryal B-roll kurarken:** `vox-explainer` + `motion-broll` + `saas-motion-video`
 - **Konuşmacının ARKASINA dev başlık veya 3D kelime halkası koyarken:** `object-separation` + `camera-3d-captions`
 - **Tekrar eden geçişlerden kurtulup her sahneyi özgün kılmak için:** `saas-motion-video` (`transition-atlas.md` — 24 geçiş + `variety_audit.py`)

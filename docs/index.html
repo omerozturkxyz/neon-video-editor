@@ -6,33 +6,38 @@
     <title>Neon Video Editor — Kodla Otonom Video Edit Sistemi</title>
     <meta
       name="description"
-      content="Premiere veya After Effects olmadan ham talking-head videoyu baştan sona kodla editleyen açık kaynak video edit sistemi, 13 repo, 26 skill ve özelleştirilebilir şablonlar."
+      content="Premiere veya After Effects olmadan ham talking-head videoyu baştan sona kodla editleyen açık kaynak video edit sistemi: 14 repo, 28 skill, gerçek kaynak & canlı ekran kaydı yakalama ve özelleştirilebilir şablonlar."
     />
     <meta property="og:title" content="Neon Video Editor — Kodla Otonom Video Edit Sistemi" />
     <meta
       property="og:description"
-      content="Ham .MOV dosyanı ver: faster-whisper kesimi, HyperFrames motion grafikleri, gerçek SFX, -16 LUFS QA ve 26 açık kaynak skill tek pakette."
+      content="Ham .MOV dosyanı ver: faster-whisper kesimi, gerçek web kaynakları & canlı ekran kayıtları, HyperFrames motion grafikleri, gerçek SFX ve -16 LUFS QA tek ajan akışında."
     />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Playfair+Display:ital,wght@1,700;1,800&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        --bg: #ffffff;
-        --surface: #f8fafc;
-        --border: #e2e8f0;
-        --ink: #0f172a;
-        --muted: #475569;
-        --accent: #2563eb;
-        --accent-soft: #eff6ff;
-        --dark: #0f172a;
-        --dark-surface: #1e293b;
-        --dark-border: #334155;
-        --radius: 12px;
+        --bg: #f2f2f2;
+        --surface: #d9d9d9;
+        --paper: #ffffff;
+        --ink: #121212;
+        --muted: #525252;
+        --dark: #121212;
+        --dark-surface: #282828;
+        --dark-card: #1b1b1b;
+        --dark-fg: #f2f2f2;
+        --dark-muted: #a3a3a3;
+        --accent: #ffea67;
+        --stamp-red: #b91c1c;
+        --shadow-sm: 4px 4px 0 #121212;
+        --shadow-md: 7px 7px 0 #121212;
+        --shadow-lg: 10px 10px 0 #121212;
+        --radius: 14px;
       }
 
       * {
@@ -47,7 +52,9 @@
         margin: 0;
         font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
         color: var(--ink);
-        background: var(--bg);
+        background-color: var(--bg);
+        background-image: radial-gradient(circle, var(--surface) 2px, transparent 2px);
+        background-size: 32px 32px;
         line-height: 1.6;
         -webkit-font-smoothing: antialiased;
       }
@@ -57,21 +64,58 @@
         text-decoration: none;
       }
 
-      .container {
-        width: 100%;
-        max-width: 1040px;
-        margin: 0 auto;
-        padding: 0 20px;
+      code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.9em;
+        padding: 2px 6px;
+        background: var(--surface);
+        border: 1.5px solid var(--ink);
+        border-radius: 5px;
+        color: var(--ink);
       }
 
-      /* Header */
+      .dark-band code {
+        background: var(--dark-surface);
+        border-color: rgba(242, 242, 242, 0.24);
+        color: var(--accent);
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 22px;
+      }
+
+      .serif-em {
+        font-family: "Playfair Display", Georgia, serif;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .hl {
+        background: var(--accent);
+        color: var(--ink);
+        padding: 0 8px 2px;
+        border-radius: 5px;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+
+      .hl-dark {
+        background: rgba(255, 234, 103, 0.22);
+        border-bottom: 3px solid var(--accent);
+        color: var(--dark-fg);
+        padding: 0 6px 1px;
+      }
+
+      /* Topbar — crisp flat paper header, zero glassmorphism */
       .topbar {
         position: sticky;
         top: 0;
-        z-index: 40;
-        background: rgba(255, 255, 255, 0.94);
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid var(--border);
+        z-index: 50;
+        background: var(--bg);
+        border-bottom: 2.5px solid var(--ink);
       }
 
       .topbar-inner {
@@ -79,138 +123,209 @@
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        height: 62px;
+        height: 68px;
       }
 
       .brand {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        font-weight: 800;
-        font-size: 16px;
-        letter-spacing: -0.02em;
+        font-weight: 900;
+        font-size: 17px;
+        letter-spacing: -0.025em;
       }
 
-      .brand-dot {
-        width: 26px;
-        height: 26px;
-        border-radius: 7px;
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
         background: var(--accent);
-        color: #ffffff;
+        border: 2px solid var(--ink);
+        box-shadow: 3px 3px 0 var(--ink);
+        color: var(--ink);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
-        font-weight: 800;
+        font-size: 16px;
+        font-weight: 900;
       }
 
       .nav-links {
         display: none;
         align-items: center;
-        gap: 22px;
-        font-size: 14px;
-        font-weight: 600;
+        gap: 24px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 700;
         color: var(--muted);
       }
 
+      .nav-links a {
+        padding: 4px 6px;
+        border-radius: 5px;
+        transition: background 0.12s ease, color 0.12s ease;
+      }
+
       .nav-links a:hover {
+        background: var(--accent);
         color: var(--ink);
       }
 
+      /* Tactile Editorial Buttons */
       .btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding: 11px 18px;
-        border-radius: 9px;
-        border: 1px solid transparent;
-        font-family: inherit;
-        font-weight: 600;
+        padding: 12px 20px;
+        border-radius: 10px;
+        border: 2.5px solid var(--ink);
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
         font-size: 14px;
+        letter-spacing: -0.01em;
         cursor: pointer;
-        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.12s ease;
+      }
+
+      .btn:hover {
+        transform: translate(-1.5px, -1.5px);
+        box-shadow: 6px 6px 0 var(--ink);
       }
 
       .btn:active {
-        transform: translateY(1px);
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--ink);
       }
 
-      .btn-primary {
+      .btn-accent {
         background: var(--accent);
-        color: #ffffff;
-      }
-
-      .btn-primary:hover {
-        background: #1d4ed8;
-      }
-
-      .btn-outline {
-        background: #ffffff;
         color: var(--ink);
-        border-color: var(--border);
       }
 
-      .btn-outline:hover {
-        background: var(--surface);
-        border-color: #cbd5e1;
+      .btn-ink {
+        background: var(--ink);
+        color: var(--dark-fg);
+      }
+
+      .btn-paper {
+        background: var(--paper);
+        color: var(--ink);
+      }
+
+      .btn-dark-accent {
+        background: var(--accent);
+        color: var(--ink);
+        border-color: var(--accent);
+        box-shadow: 4px 4px 0 rgba(255, 234, 103, 0.28);
+      }
+
+      .btn-dark-accent:hover {
+        box-shadow: 5px 5px 0 rgba(255, 234, 103, 0.36);
       }
 
       .btn-sm {
-        padding: 7px 12px;
-        font-size: 13px;
+        padding: 8px 14px;
+        font-size: 12.5px;
+        border-width: 2px;
         border-radius: 8px;
+        box-shadow: 3px 3px 0 var(--ink);
       }
 
       /* Hero */
       .hero {
-        padding: 52px 0 56px;
-        border-bottom: 1px solid var(--border);
-        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        padding: 54px 0 64px;
+        border-bottom: 2.5px solid var(--ink);
       }
 
-      .badge {
+      .kicker-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .stamp-pill {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 5px 12px;
-        background: var(--accent-soft);
-        color: var(--accent);
-        border: 1px solid #bfdbfe;
-        border-radius: 999px;
+        gap: 8px;
+        padding: 6px 14px;
+        background: var(--accent);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        box-shadow: 3px 3px 0 var(--ink);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+
+      .meta-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        background: var(--paper);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 8px;
         font-family: "JetBrains Mono", monospace;
         font-size: 12px;
         font-weight: 700;
       }
 
       h1 {
-        margin: 16px 0 14px;
-        font-size: clamp(32px, 6vw, 54px);
-        font-weight: 800;
-        letter-spacing: -0.035em;
-        line-height: 1.08;
+        margin: 22px 0 16px;
+        font-size: clamp(34px, 6.2vw, 60px);
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        line-height: 1.04;
+        color: var(--ink);
       }
 
       .lead {
-        max-width: 680px;
-        font-size: clamp(16px, 2.2vw, 18px);
+        max-width: 720px;
+        font-size: clamp(16px, 2.2vw, 19px);
+        font-weight: 500;
         color: var(--muted);
-        margin: 0 0 24px;
+        margin: 0 0 28px;
+      }
+
+      .lead strong {
+        color: var(--ink);
+        font-weight: 800;
       }
 
       .hero-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 28px;
+        gap: 12px;
+        margin-bottom: 36px;
       }
 
-      /* Terminal Card */
+      /* Paperclipped Terminal Card */
+      .term-shell {
+        position: relative;
+        margin-top: 12px;
+      }
+
+      .paperclip {
+        position: absolute;
+        right: 26px;
+        top: -22px;
+        width: 30px;
+        height: 56px;
+        z-index: 10;
+        pointer-events: none;
+      }
+
       .term-card {
         background: var(--dark);
-        color: #f8fafc;
-        border: 1px solid var(--dark-border);
+        color: var(--dark-fg);
+        border: 2.5px solid var(--ink);
         border-radius: var(--radius);
+        box-shadow: var(--shadow-lg);
         overflow: hidden;
       }
 
@@ -220,12 +335,19 @@
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        padding: 11px 16px;
-        background: var(--dark-surface);
-        border-bottom: 1px solid var(--dark-border);
+        padding: 13px 18px;
+        background: #1c1c1c;
+        border-bottom: 2px solid rgba(242, 242, 242, 0.14);
         font-family: "JetBrains Mono", monospace;
         font-size: 12px;
-        color: #94a3b8;
+        font-weight: 700;
+        color: var(--dark-muted);
+      }
+
+      .term-dots {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
       }
 
       .mode-tabs {
@@ -234,47 +356,48 @@
       }
 
       .mode-tab {
-        border: 1px solid var(--dark-border);
+        border: 1.5px solid rgba(242, 242, 242, 0.24);
         background: transparent;
-        color: #cbd5e1;
-        padding: 4px 10px;
+        color: var(--dark-fg);
+        padding: 5px 11px;
         border-radius: 6px;
         font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
+        font-size: 11.5px;
         font-weight: 700;
         cursor: pointer;
+        transition: background 0.12s ease, color 0.12s ease;
       }
 
       .mode-tab.active {
         background: var(--accent);
-        color: #ffffff;
+        color: var(--ink);
         border-color: var(--accent);
       }
 
       .term-body {
-        padding: 18px;
+        padding: 20px 22px;
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 16px;
       }
 
       .code-line {
         margin: 0;
         font-family: "JetBrains Mono", monospace;
-        font-size: 13px;
-        line-height: 1.7;
-        color: #f1f5f9;
+        font-size: 13.5px;
+        line-height: 1.75;
+        color: var(--dark-fg);
         overflow-x: auto;
         white-space: pre;
       }
 
       .code-line .c-prompt {
-        color: #60a5fa;
-        font-weight: 700;
+        color: var(--accent);
+        font-weight: 800;
       }
 
       .code-line .c-comment {
-        color: #64748b;
+        color: var(--dark-muted);
       }
 
       .term-foot {
@@ -282,90 +405,126 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
-        padding-top: 12px;
-        border-top: 1px solid var(--dark-border);
-        font-size: 12.5px;
-        color: #94a3b8;
+        gap: 12px;
+        padding-top: 14px;
+        border-top: 1.5px solid rgba(242, 242, 242, 0.14);
+        font-size: 13px;
+        color: var(--dark-muted);
       }
 
-      /* Stats */
+      /* Stats Ledger */
       .stats-grid {
-        margin-top: 24px;
+        margin-top: 30px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 14px;
       }
 
       .stat-box {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 15px 16px;
+        background: var(--paper);
+        border: 2.5px solid var(--ink);
+        border-radius: 12px;
+        padding: 16px 18px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .stat-box.stat-accent {
+        background: var(--accent);
       }
 
       .stat-k {
         font-family: "JetBrains Mono", monospace;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 800;
         color: var(--muted);
+        letter-spacing: 0.03em;
+      }
+
+      .stat-box.stat-accent .stat-k {
+        color: var(--ink);
       }
 
       .stat-v {
-        margin-top: 4px;
-        font-size: 26px;
+        margin-top: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 28px;
         font-weight: 800;
-        letter-spacing: -0.025em;
+        letter-spacing: -0.03em;
         font-variant-numeric: tabular-nums;
+        color: var(--ink);
       }
 
-      /* Sections */
-      section.block {
-        padding: 60px 0;
-        border-bottom: 1px solid var(--border);
+      /* Section Bands — Alternating Light Paper & Dark Obsidian Dot-Grid */
+      section.band {
+        padding: 72px 0;
+        border-bottom: 2.5px solid var(--ink);
       }
 
-      section.block.alt {
-        background: var(--surface);
+      section.dark-band {
+        background-color: var(--dark);
+        background-image: radial-gradient(circle, var(--dark-surface) 2px, transparent 2px);
+        background-size: 32px 32px;
+        color: var(--dark-fg);
       }
 
       .sec-kicker {
+        display: inline-block;
+        padding: 4px 11px;
+        background: var(--accent);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 6px;
+        box-shadow: 3px 3px 0 var(--ink);
         font-family: "JetBrains Mono", monospace;
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--accent);
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+      }
+
+      .dark-band .sec-kicker {
+        border-color: var(--accent);
+        box-shadow: none;
       }
 
       h2 {
-        margin: 6px 0 8px;
-        font-size: clamp(24px, 4vw, 34px);
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        line-height: 1.14;
+        margin: 14px 0 10px;
+        font-size: clamp(26px, 4.4vw, 40px);
+        font-weight: 900;
+        letter-spacing: -0.035em;
+        line-height: 1.1;
       }
 
       .sec-sub {
-        margin: 0 0 26px;
+        margin: 0 0 32px;
         color: var(--muted);
-        font-size: 15px;
-        max-width: 660px;
+        font-size: 15.5px;
+        max-width: 700px;
       }
 
-      /* Pipeline */
+      .dark-band .sec-sub {
+        color: var(--dark-muted);
+      }
+
+      /* 6-Step Pipeline Cards (Dark Band) */
       .steps-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 16px;
       }
 
       .step-card {
-        background: #ffffff;
-        border: 1px solid var(--border);
+        background: var(--dark-card);
+        border: 2px solid rgba(242, 242, 242, 0.22);
         border-radius: var(--radius);
-        padding: 20px;
+        padding: 22px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.55);
+      }
+
+      .step-card.featured {
+        border-color: var(--accent);
       }
 
       .step-top {
@@ -376,49 +535,116 @@
       }
 
       .step-num {
-        padding: 3px 9px;
-        background: var(--accent-soft);
-        color: var(--accent);
+        padding: 4px 10px;
+        background: var(--accent);
+        color: var(--ink);
         border-radius: 6px;
         font-family: "JetBrains Mono", monospace;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 12.5px;
+        font-weight: 800;
       }
 
       .step-tag {
         font-family: "JetBrains Mono", monospace;
         font-size: 11px;
-        color: var(--muted);
+        font-weight: 700;
+        color: var(--dark-muted);
       }
 
       .step-title {
-        font-size: 17px;
-        font-weight: 700;
-        letter-spacing: -0.015em;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--dark-fg);
       }
 
       .step-desc {
         margin: 0;
         font-size: 14px;
-        color: var(--muted);
+        color: var(--dark-muted);
       }
 
       .step-pills {
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
-        margin-top: 2px;
+        margin-top: auto;
+        padding-top: 4px;
       }
 
       .pill {
-        padding: 3px 8px;
-        background: var(--surface);
-        border: 1px solid var(--border);
+        padding: 3px 9px;
+        background: var(--bg);
+        border: 1.5px solid var(--ink);
         border-radius: 6px;
         font-family: "JetBrains Mono", monospace;
         font-size: 11px;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--ink);
+      }
+
+      .dark-band .pill {
+        background: var(--dark-surface);
+        border-color: rgba(242, 242, 242, 0.2);
+        color: var(--dark-fg);
+      }
+
+      .pill-accent {
+        background: var(--accent) !important;
+        color: var(--ink) !important;
+        border-color: var(--ink) !important;
+      }
+
+      /* 3-Tier Real B-Roll Spotlight Strip */
+      .broll-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .broll-card {
+        background: var(--paper);
+        border: 2.5px solid var(--ink);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .broll-card.broll-dark {
+        background: var(--dark);
+        color: var(--dark-fg);
+      }
+
+      .broll-card.broll-dark .broll-desc {
+        color: var(--dark-muted);
+      }
+
+      .broll-badge {
+        align-self: flex-start;
+        padding: 4px 10px;
+        background: var(--accent);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11.5px;
+        font-weight: 800;
+      }
+
+      .broll-title {
+        font-size: 19px;
+        font-weight: 900;
+        letter-spacing: -0.025em;
+      }
+
+      .broll-desc {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
       }
 
       /* Skills Filter & Grid */
@@ -426,7 +652,7 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        margin-bottom: 22px;
+        margin-bottom: 24px;
       }
 
       .chips {
@@ -436,49 +662,67 @@
       }
 
       .chip {
-        padding: 7px 12px;
-        background: #ffffff;
-        border: 1px solid var(--border);
+        padding: 8px 13px;
+        background: var(--paper);
+        border: 2px solid var(--ink);
         border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--muted);
+        box-shadow: 3px 3px 0 var(--ink);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--ink);
         cursor: pointer;
+        transition: transform 0.1s ease, background 0.12s ease;
+      }
+
+      .chip:hover {
+        transform: translate(-1px, -1px);
       }
 
       .chip.active {
-        background: var(--ink);
-        color: #ffffff;
-        border-color: var(--ink);
+        background: var(--accent);
+        color: var(--ink);
       }
 
       .search-input {
         width: 100%;
         max-width: 340px;
-        padding: 9px 13px;
-        border: 1px solid var(--border);
+        padding: 10px 14px;
+        border: 2px solid var(--ink);
         border-radius: 8px;
-        background: #ffffff;
-        font-family: inherit;
-        font-size: 14px;
+        box-shadow: 3px 3px 0 var(--ink);
+        background: var(--paper);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 600;
         color: var(--ink);
+      }
+
+      .search-input:focus {
+        outline: none;
+        background: #fffef2;
       }
 
       .repos-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 16px;
       }
 
       .repo-card {
-        background: #ffffff;
-        border: 1px solid var(--border);
+        background: var(--paper);
+        border: 2.5px solid var(--ink);
         border-radius: var(--radius);
-        padding: 18px;
+        padding: 20px;
+        box-shadow: var(--shadow-md);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: 14px;
+        gap: 16px;
+      }
+
+      .repo-card.repo-new {
+        border-width: 3px;
       }
 
       .repo-head {
@@ -489,24 +733,28 @@
       }
 
       .repo-name {
-        font-size: 16px;
-        font-weight: 700;
-        letter-spacing: -0.015em;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        word-break: break-word;
       }
 
       .repo-cat {
-        padding: 3px 8px;
-        background: var(--accent-soft);
-        color: var(--accent);
+        padding: 4px 9px;
+        background: var(--accent);
+        color: var(--ink);
+        border: 1.5px solid var(--ink);
         border-radius: 6px;
         font-family: "JetBrains Mono", monospace;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 800;
         white-space: nowrap;
       }
 
       .repo-desc {
-        margin: 8px 0 0;
+        margin: 10px 0 0;
         font-size: 13.5px;
         color: var(--muted);
       }
@@ -515,84 +763,90 @@
         display: inline-flex;
         align-items: center;
         justify-content: space-between;
-        padding: 8px 12px;
-        background: var(--surface);
-        border: 1px solid var(--border);
+        padding: 9px 14px;
+        background: var(--bg);
+        border: 2px solid var(--ink);
         border-radius: 8px;
         font-family: "JetBrains Mono", monospace;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         color: var(--ink);
+        transition: background 0.12s ease, color 0.12s ease;
       }
 
       .repo-link:hover {
         background: var(--ink);
-        color: #ffffff;
-        border-color: var(--ink);
+        color: var(--accent);
       }
 
-      /* Templates */
+      /* Templates (Dark Band) */
       .tpl-tabs {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
       }
 
       .tpl-tab {
-        padding: 8px 14px;
+        padding: 9px 14px;
         border-radius: 8px;
-        border: 1px solid var(--border);
-        background: #ffffff;
-        color: var(--muted);
+        border: 2px solid rgba(242, 242, 242, 0.26);
+        background: var(--dark-card);
+        color: var(--dark-fg);
         font-family: "JetBrains Mono", monospace;
         font-size: 12px;
         font-weight: 700;
         cursor: pointer;
+        transition: background 0.12s ease, color 0.12s ease;
       }
 
       .tpl-tab.active {
         background: var(--accent);
-        color: #ffffff;
+        color: var(--ink);
         border-color: var(--accent);
       }
 
       .tpl-box {
-        background: var(--dark);
-        border: 1px solid var(--dark-border);
+        background: #0b0b0b;
+        border: 2.5px solid rgba(242, 242, 242, 0.24);
         border-radius: var(--radius);
+        box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.6);
         overflow: hidden;
       }
 
       .tpl-bar {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        padding: 11px 16px;
-        background: var(--dark-surface);
-        border-bottom: 1px solid var(--dark-border);
+        padding: 12px 18px;
+        background: var(--dark-card);
+        border-bottom: 1.5px solid rgba(242, 242, 242, 0.16);
         font-family: "JetBrains Mono", monospace;
         font-size: 12px;
-        color: #cbd5e1;
+        font-weight: 700;
+        color: var(--accent);
       }
 
       .tpl-pre {
         margin: 0;
-        padding: 18px;
+        padding: 20px;
         font-family: "JetBrains Mono", monospace;
         font-size: 12.5px;
-        line-height: 1.65;
-        color: #f1f5f9;
+        line-height: 1.68;
+        color: var(--dark-fg);
         white-space: pre-wrap;
         word-break: break-word;
-        max-height: 420px;
+        max-height: 440px;
         overflow-y: auto;
       }
 
       footer {
-        padding: 28px 0;
-        font-size: 13px;
+        padding: 32px 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        font-weight: 700;
         color: var(--muted);
       }
 
@@ -601,28 +855,32 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
+        gap: 14px;
       }
 
       .toast {
         position: fixed;
-        bottom: 20px;
+        bottom: 22px;
         left: 50%;
-        transform: translateX(-50%) translateY(90px);
-        background: var(--dark);
-        color: #ffffff;
-        padding: 10px 18px;
-        border-radius: 8px;
+        transform: translateX(-50%) translateY(24px);
+        opacity: 0;
+        pointer-events: none;
+        background: var(--accent);
+        color: var(--ink);
+        border: 2.5px solid var(--ink);
+        box-shadow: 5px 5px 0 var(--ink);
+        padding: 10px 20px;
+        border-radius: 10px;
         font-family: "JetBrains Mono", monospace;
-        font-size: 12.5px;
-        font-weight: 700;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
-        transition: transform 0.2s ease;
+        font-size: 13px;
+        font-weight: 800;
+        transition: transform 0.2s ease, opacity 0.2s ease;
         z-index: 90;
       }
 
       .toast.show {
         transform: translateX(-50%) translateY(0);
+        opacity: 1;
       }
 
       @media (min-width: 720px) {
@@ -634,6 +892,9 @@
         }
         .steps-grid {
           grid-template-columns: repeat(2, 1fr);
+        }
+        .broll-grid {
+          grid-template-columns: repeat(3, 1fr);
         }
         .repos-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -656,57 +917,78 @@
     <header class="topbar">
       <div class="container topbar-inner">
         <a class="brand" href="#top">
-          <span class="brand-dot" aria-hidden="true">✦</span>
+          <span class="brand-mark" aria-hidden="true">✦</span>
           <span>Neon Video Editor</span>
         </a>
         <nav class="nav-links" aria-label="Bölümler">
-          <a href="#pipeline">6 Adım</a>
-          <a href="#skills">26 Skill</a>
-          <a href="#templates">Şablonlar</a>
+          <a href="#pipeline">01 · 6 Adım</a>
+          <a href="#broll">02 · Gerçek B-Roll</a>
+          <a href="#skills">03 · 28 Skill</a>
+          <a href="#templates">04 · Şablonlar</a>
         </nav>
-        <a class="btn btn-outline btn-sm repo-url-link" href="#top" target="_blank" rel="noopener">
+        <a class="btn btn-accent btn-sm repo-url-link" href="#top" target="_blank" rel="noopener">
           GitHub Reposu ↗
         </a>
       </div>
     </header>
 
     <main id="top">
+      <!-- HERO · LIGHT PAPER DOT-GRID -->
       <section class="hero">
         <div class="container">
-          <span class="badge">AÇIK KAYNAK · KODLA OTONOM VİDEO KURGU REHBERİ</span>
-          <h1>Ham videodan final MP4'e tamamen kodla kurgu.</h1>
+          <div class="kicker-row">
+            <span class="stamp-pill">✦ AÇIK KAYNAK · KODLA OTONOM VİDEO KURGU</span>
+            <span class="meta-pill">14 REPO · 28 SKİLL · MIT</span>
+          </div>
+          <h1>
+            Ham videodan final MP4'e
+            <span class="serif-em"><mark class="hl">tamamen kodla</mark></span> kurgu.
+          </h1>
           <p class="lead">
             Premiere Pro veya After Effects açmadan: ham talking-head videonu ver; transkript,
-            hatalı çekim ve boşluk kesimi, B-roll eşleştirme, kelimeye kilitli motion grafikleri,
-            gerçek SFX ve <strong>-16 LUFS</strong> ses testi tek ajan akışında tamamlansın.
+            hatalı çekim ve boşluk kesimi, <strong>gerçek web kaynakları &amp; canlı ekran kayıtları</strong>,
+            kelimeye kilitli motion grafikleri, gerçek foley SFX ve <strong>-16 LUFS</strong> ses
+            doğrulaması tek ajan akışında tamamlansın.
           </p>
 
           <div class="hero-actions">
-            <a class="btn btn-primary repo-url-link" href="#top" target="_blank" rel="noopener">
+            <a class="btn btn-ink repo-url-link" href="#top" target="_blank" rel="noopener">
               GitHub Reposunu Aç →
             </a>
-            <a class="btn btn-outline" href="#skills">26 Skill Kataloğunu İncele ↓</a>
+            <a class="btn btn-accent" href="#skills">28 Skill Kataloğunu İncele ↓</a>
+            <a class="btn btn-paper" href="#broll">Gerçek Kaynak &amp; Ekran Kaydı Skill'i</a>
           </div>
 
-          <div class="term-card" aria-label="Hızlı kurulum komutu">
-            <div class="term-head">
-              <span>HIZLI KURULUM · 3 DAKİKA</span>
-              <div class="mode-tabs">
-                <button class="mode-tab active" data-install="agents" type="button">
-                  Antigravity / Gemini
-                </button>
-                <button class="mode-tab" data-install="claude" type="button">
-                  + Claude Code
-                </button>
+          <div class="term-shell">
+            <svg class="paperclip" viewBox="0 0 42 78" fill="none" aria-hidden="true" style="filter: drop-shadow(2px 2px 0 #121212)">
+              <path
+                d="M15 24V57C15 65.284 21.716 72 30 72C38.284 72 45 65.284 45 57V17C45 10.373 39.627 5 33 5C26.373 5 21 10.373 21 17V53C21 56.314 23.686 59 27 59C30.314 59 33 56.314 33 53V22"
+                transform="translate(-6,0)"
+                stroke="#D9D9D9"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+            </svg>
+            <div class="term-card" aria-label="Hızlı kurulum komutu">
+              <div class="term-head">
+                <span class="term-dots">HIZLI KURULUM · 3 DAKİKA · install-skills.sh</span>
+                <div class="mode-tabs">
+                  <button class="mode-tab active" data-install="agents" type="button">
+                    Antigravity / Gemini
+                  </button>
+                  <button class="mode-tab" data-install="claude" type="button">
+                    + Claude Code
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="term-body">
-              <pre class="code-line" id="install-code"></pre>
-              <div class="term-foot">
-                <span>10 açık kaynak motion reposunu çeker ve 20 workspace skill'ini otomatik bağlar.</span>
-                <button class="btn btn-primary btn-sm" id="copy-install-btn" type="button">
-                  Komutu Kopyala
-                </button>
+              <div class="term-body">
+                <pre class="code-line" id="install-code"></pre>
+                <div class="term-foot">
+                  <span>11 açık kaynak repoyu çeker ve dahili <code>real-broll-capture</code> dahil 22 skill'i otomatik bağlar.</span>
+                  <button class="btn btn-dark-accent btn-sm" id="copy-install-btn" type="button">
+                    Komutu Kopyala
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -714,11 +996,11 @@
           <div class="stats-grid">
             <div class="stat-box">
               <div class="stat-k">AÇIK KAYNAK REPO</div>
-              <div class="stat-v">13</div>
+              <div class="stat-v">14</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-box stat-accent">
               <div class="stat-k">KURULU SKİLL</div>
-              <div class="stat-v">26</div>
+              <div class="stat-v">28</div>
             </div>
             <div class="stat-box">
               <div class="stat-k">GEÇİŞ ATLASI</div>
@@ -732,14 +1014,18 @@
         </div>
       </section>
 
-      <section class="block alt" id="pipeline">
+      <!-- 6-STEP PIPELINE · DARK OBSIDIAN DOT-GRID -->
+      <section class="band dark-band" id="pipeline">
         <div class="container">
-          <div class="sec-kicker">MİMARİ AKIŞ</div>
-          <h2>Ham dosyadan final MP4'e 6 adım</h2>
+          <span class="sec-kicker">01 · MİMARİ AKIŞ</span>
+          <h2>
+            Ham dosyadan final MP4'e
+            <span class="serif-em"><mark class="hl-dark">6 deterministik adım</mark></span>
+          </h2>
           <p class="sec-sub">
-            Tüm adımlar deterministik scriptler ve yerel CLI araçlarıyla çalışır; görsel stil,
-            renk ve tipografi kurallarını kendi <code>MEMORY.md</code> dosyan üzerinden özgürce
-            tanımlarsın.
+            Tüm adımlar tekrarlanabilir scriptler ve yerel CLI motorlarıyla çalışır; kendi görsel
+            stilini, renk paletini ve tipografi tercihlerini nötr <code>MEMORY.md</code> şablonuyla
+            özgürce tanımlarsın.
           </p>
 
           <div class="steps-grid">
@@ -751,13 +1037,13 @@
               <div class="step-title">HDR → SDR &amp; Harici Mic Kilidi</div>
               <p class="step-desc">
                 4K HLG kayıtları Apple native <code>avconvert</code> ile temiz Rec.709 SDR'ye
-                çevrilir; ayrı harici mikrofon kaydı varsa 1 ms RMS zarf korelasyonuyla sıfır kare
-                kaymayla senkronlanır.
+                çevrilir; ayrı mikrofon kaydı varsa 1 ms RMS zarf korelasyonuyla sıfır kare kaymayla
+                kameraya kilitlenir.
               </p>
               <div class="step-pills">
                 <span class="pill">avconvert</span>
                 <span class="pill">ffmpeg-skill</span>
-                <span class="pill">1 ms RMS sync</span>
+                <span class="pill">0.5s keyframe</span>
               </div>
             </article>
 
@@ -775,25 +1061,25 @@
               <div class="step-pills">
                 <span class="pill">faster-whisper</span>
                 <span class="pill">&gt; 0.20s kesim</span>
-                <span class="pill">0.5s keyframe</span>
+                <span class="pill">±10ms kilit</span>
               </div>
             </article>
 
-            <article class="step-card">
+            <article class="step-card featured">
               <div class="step-top">
                 <span class="step-num">#02</span>
-                <span class="step-tag">HİKÂYE &amp; ÇEŞİTLİLİK</span>
+                <span class="step-tag">HİKÂYE &amp; GERÇEK B-ROLL</span>
               </div>
-              <div class="step-title">Storyboard &amp; Gerçek B-Roll</div>
+              <div class="step-title">Gerçek Kaynaklar &amp; Canlı Ekran Kayıtları</div>
               <p class="step-desc">
-                Sahne bazlı hikâye akışı çıkarılır; 24 Geçiş Atlası ve
-                <code>variety_audit.py</code> ile ardışık tekrar sıfırlanır, her cümleye uygun
-                ekran kaydı veya görsel eşlenir.
+                Sahne planı çıkarılır; <code>real-broll-capture</code> ile bahsedilen gerçek
+                makaleler 2× Retina yakalanır, sitelerin canlı kaydırmalı + imleçli 30 fps ekran
+                kayıtları çekilir, gerçek görüntü yoksa AI sahne üretilir.
               </p>
               <div class="step-pills">
-                <span class="pill">saas-motion-video</span>
-                <span class="pill">vox-explainer</span>
-                <span class="pill">motion-broll</span>
+                <span class="pill pill-accent">real-broll-capture</span>
+                <span class="pill">playwright-recording</span>
+                <span class="pill">variety_audit</span>
               </div>
             </article>
 
@@ -804,9 +1090,9 @@
               </div>
               <div class="step-title">Kelimeye Kilitli Motion Grafikler</div>
               <p class="step-desc">
-                Her sahne HTML, CSS, GSAP ve Canvas 2D ile kodlanır. Animasyonlar ve altyazılar
-                kendi <code>MEMORY.md</code> stil kurallarına göre konuşulan kelimelerin tam
-                milisaniyesine kilitlenir.
+                Her sahne HTML, CSS, GSAP ve Canvas 2D ile kodlanır. Animasyonlar ve akıllı
+                altyazılar kendi <code>MEMORY.md</code> stil kurallarına göre konuşulan kelimelere
+                milisaniye bazında kilitlenir.
               </p>
               <div class="step-pills">
                 <span class="pill">hyperframes</span>
@@ -854,19 +1140,87 @@
         </div>
       </section>
 
-      <section class="block" id="skills">
+      <!-- 3-TIER REAL B-ROLL CAPTURE · LIGHT PAPER DOT-GRID -->
+      <section class="band" id="broll">
         <div class="container">
-          <div class="sec-kicker">AÇIK KAYNAK EKOSİSTEM</div>
-          <h2>13 Repo &amp; 26 Skill Kataloğu</h2>
+          <span class="sec-kicker">02 · DAHİLİ SKİLL · real-broll-capture</span>
+          <h2>
+            Sahte site maketleri yok:
+            <span class="serif-em"><mark class="hl">3 katmanlı gerçek B-roll</mark></span>
+          </h2>
           <p class="sec-sub">
-            Aşağıdaki repoların tamamı <code>install-skills.sh</code> ile tek komutla hafif şekilde
-            kurulabilir veya tek tek incelenebilir.
+            Depoyla birlikte gelen <code>skills/real-broll-capture/</code> skill'i, konuşmada geçen
+            kaynakları ve siteleri headless Chrome ile canlı yakalayıp doğrudan HyperFrames'e hazır
+            <code>bt709 30 fps CFR</code> dosyalara çevirir.
+          </p>
+
+          <div class="broll-grid">
+            <article class="broll-card">
+              <span class="broll-badge">KATMAN 01 · --mode source</span>
+              <div class="broll-title">Gerçek Kaynak Yakalama</div>
+              <p class="broll-desc">
+                Resmi bloglar, araştırma makaleleri ve dokümanlar <code>540×960 @2x</code>
+                (<code>1080×1920</code> Retina PNG) olarak çerez banner'ları otomatik gizlenip
+                yakalanır ve <code>SOURCES.md</code> defterine kaydedilir.
+              </p>
+            </article>
+
+            <article class="broll-card broll-dark">
+              <span class="broll-badge">KATMAN 02 · --mode record</span>
+              <div class="broll-title">Canlı Site Ekran Kaydı</div>
+              <p class="broll-desc">
+                Bahsedilen web sitesi veya GitHub reposu akıcı kübik kaydırma, gerçek CSS
+                <code>:hover</code> tepkileri ve vektör macOS imleciyle kare kare kaydedilip
+                <code>-g 15 -bf 0</code> hızlı-seek MP4'e çevrilir.
+              </p>
+            </article>
+
+            <article class="broll-card">
+              <span class="broll-badge">KATMAN 03 · AI / KOD SAHNE</span>
+              <div class="broll-title">Sıfırdan Üretilen Sahneler</div>
+              <p class="broll-desc">
+                Gerçek görüntüsü olmayan soyut veya fütüristik kavramlar için tam ekran 9:16
+                sinematik AI görseli / kodlu Canvas 2D sahnesi üretilir ve ekranda şeffaf biçimde
+                etiketlenir.
+              </p>
+            </article>
+          </div>
+
+          <div class="term-card">
+            <div class="term-head">
+              <span>ÖRNEK KOMUT · skills/real-broll-capture/scripts/capture_site.mjs</span>
+              <button class="btn btn-dark-accent btn-sm" id="copy-broll-btn" type="button">
+                Örneği Kopyala
+              </button>
+            </div>
+            <div class="term-body">
+              <pre class="code-line" id="broll-code"><span class="c-comment"># 1) Gerçek birincil makaleyi 2x Retina PNG yakala</span>
+<span class="c-prompt">$</span> node skills/real-broll-capture/scripts/capture_site.mjs --mode source --url "https://blog.google/technology/google-deepmind/" --out assets/sources/real-source.png --theme light
+
+<span class="c-comment"># 2) Canlı siteyi kaydırma + imleçle 30fps CFR MP4 olarak kaydet</span>
+<span class="c-prompt">$</span> node skills/real-broll-capture/scripts/capture_site.mjs --mode record --url "https://github.com/heygen-com/hyperframes" --out assets/sources/screen-record.mp4 --duration 2.0 --scroll-distance 600 --theme dark</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS CATALOG · LIGHT PAPER DOT-GRID -->
+      <section class="band" id="skills">
+        <div class="container">
+          <span class="sec-kicker">03 · AÇIK KAYNAK EKOSİSTEM</span>
+          <h2>
+            14 Repo &amp; <span class="serif-em"><mark class="hl">28 Skill</mark></span> Kataloğu
+          </h2>
+          <p class="sec-sub">
+            Aşağıdaki repoların tamamı <code>install-skills.sh</code> ile tek komutla hafif shallow
+            clone olarak kurulabilir veya tek tek incelenebilir.
           </p>
 
           <div class="filter-bar">
             <div class="chips" id="cat-chips">
-              <button class="chip active" data-cat="all" type="button">Tümü (13)</button>
+              <button class="chip active" data-cat="all" type="button">Tümü</button>
               <button class="chip" data-cat="core" type="button">Ana Motorlar (3)</button>
+              <button class="chip" data-cat="capture" type="button">Kaynak &amp; Ekran Kaydı (2)</button>
               <button class="chip" data-cat="talking" type="button">Talking-Head &amp; B-Roll (4)</button>
               <button class="chip" data-cat="craft" type="button">Stil &amp; Motion Craft (5)</button>
               <button class="chip" data-cat="reverse" type="button">Tersine Mühendislik (1)</button>
@@ -875,7 +1229,7 @@
               class="search-input"
               id="skill-search"
               type="search"
-              placeholder="Skill veya repo ara (ör. vox, ffmpeg, 3d)..."
+              placeholder="Skill veya repo ara (ör. capture, vox, ffmpeg)..."
               aria-label="Skill veya repo ara"
             />
           </div>
@@ -884,10 +1238,14 @@
         </div>
       </section>
 
-      <section class="block alt" id="templates">
+      <!-- NEUTRAL TEMPLATES · DARK OBSIDIAN DOT-GRID -->
+      <section class="band dark-band" id="templates">
         <div class="container">
-          <div class="sec-kicker">ÖZELLEŞTİRİLEBİLİR BAŞLANGIÇ DOSYALARI</div>
-          <h2>Nötr Prompt &amp; Kurgu Şablonları</h2>
+          <span class="sec-kicker">04 · ÖZELLEŞTİRİLEBİLİR BAŞLANGIÇ DOSYALARI</span>
+          <h2>
+            Nötr Prompt &amp;
+            <span class="serif-em"><mark class="hl-dark">kendi stilinle</mark></span> şablonlar
+          </h2>
           <p class="sec-sub">
             Kendi renklerini, fontlarını ve görsel tarzını <code>MEMORY.md</code> içine yazıp
             aşağıdaki ana prompt ile projeyi başlatabilirsin.
@@ -897,13 +1255,14 @@
             <button class="tpl-tab active" data-tpl="prompt" type="button">Ana Edit Prompt'u</button>
             <button class="tpl-tab" data-tpl="memory" type="button">MEMORY.md Şablonu</button>
             <button class="tpl-tab" data-tpl="agents" type="button">AGENTS.md Kuralları</button>
+            <button class="tpl-tab" data-tpl="capture" type="button">real-broll-capture SKILL</button>
             <button class="tpl-tab" data-tpl="audio" type="button">master-audio.sh</button>
           </div>
 
           <div class="tpl-box">
             <div class="tpl-bar">
               <span id="tpl-filename">templates/prompts/neon-edit-prompt.md</span>
-              <button class="btn btn-primary btn-sm" id="copy-tpl-btn" type="button">
+              <button class="btn btn-dark-accent btn-sm" id="copy-tpl-btn" type="button">
                 Şablonu Kopyala
               </button>
             </div>
@@ -915,8 +1274,8 @@
 
     <footer>
       <div class="container footer-inner">
-        <span>Neon Video Editor — Kodla Otonom Video Edit Sistemi · MIT Lisansı</span>
-        <a class="btn btn-outline btn-sm repo-url-link" href="#top" target="_blank" rel="noopener">
+        <span>✦ NEON VİDEO EDİTOR · KODLA OTONOM VİDEO EDİT SİSTEMİ · MIT LİSANSI</span>
+        <a class="btn btn-paper btn-sm repo-url-link" href="#top" target="_blank" rel="noopener">
           Kaynak Kodu GitHub'da Gör ↗
         </a>
       </div>
@@ -925,10 +1284,11 @@
     <div class="toast" id="toast" role="status" aria-live="polite">Panoya kopyalandı ✓</div>
 
     <script>
-      const hostParts = window.location.hostname.endsWith(".github.io")
-        ? window.location.hostname.replace(".github.io", "")
-        : "";
-      const pathRepo = window.location.pathname.split("/").filter(Boolean)[0] || "neon-video-editor";
+      const isGhPages = window.location.hostname.endsWith(".github.io");
+      const hostParts = isGhPages ? window.location.hostname.replace(".github.io", "") : "";
+      const pathRepo = isGhPages
+        ? window.location.pathname.split("/").filter(Boolean)[0] || "neon-video-editor"
+        : "neon-video-editor";
       const REPO_URL = hostParts ? `https://github.com/${hostParts}/${pathRepo}` : "https://github.com";
       const CLONE_URL = hostParts ? `${REPO_URL}.git` : "<REPO_URL>.git";
 
@@ -937,6 +1297,24 @@
       });
 
       const REPOS = [
+        {
+          name: "skills/real-broll-capture (Dahili)",
+          cat: "capture",
+          catLabel: "Kaynak & Ekran Kaydı",
+          url: `${REPO_URL}/tree/main/skills/real-broll-capture`,
+          desc: "Bu repoyla dahili gelir: gerçek web kaynaklarını 2× Retina PNG yakalar ve bahsedilen sitelerin canlı kaydırmalı + macOS imleçli 30 fps CFR bt709 MP4 ekran kayıtlarını üretir.",
+          skills: ["real-broll-capture"],
+          highlight: true,
+        },
+        {
+          name: "digitalsamba/claude-code-video-toolkit",
+          cat: "capture",
+          catLabel: "Kaynak & Ekran Kaydı",
+          url: "https://github.com/digitalsamba/claude-code-video-toolkit",
+          desc: "Playwright ile web uygulaması akışlarını otomatik çerez temizliği, özel imleç/tıklama enjeksiyonu ve FFmpeg MP4 hattıyla kaydeden playwright-recording skill'i.",
+          skills: ["playwright-recording"],
+          highlight: true,
+        },
         {
           name: "heygen-com/hyperframes",
           cat: "core",
@@ -1051,7 +1429,7 @@ Videoda metni birden fazla kez okudum; çekim sırasında bazı cümleleri ufak 
 
 Önce kendi stilimi tanımladığım MEMORY.md ve AGENTS.md dosyalarını oku, ardından şu 6 adımı baştan sona otonom uygula:
 1. Ses Senkronu & Take Seçimi: Ayrı harici mikrofon kaydı varsa 1 ms RMS zarf korelasyonuyla kameraya kilitle; faster-whisper kelime zamanlarıyla en iyi take'leri seç, hatalı tekrarları ve >0.20 sn boşlukları kes. Ham HLG görüntüyü Rec.709 SDR (30 fps CFR, 0.5s keyframe) yapıp agresif afftdn kullanmadan temiz stüdyo vokal mastering uygula.
-2. Storyboard & Çeşitlilik: MEMORY.md içindeki yerleşim ve stil tercihlerime göre sahne planı çıkar; ardışık iki sahnede aynı geçişi tekrarlama (variety_audit.py ile doğrula).
+2. Storyboard & 3 Katmanlı Gerçek B-Roll: MEMORY.md içindeki yerleşim ve stil tercihlerime göre sahne planı çıkar; ardışık iki sahnede aynı geçişi tekrarlama (variety_audit.py). Konuşmada geçen gerçek makale/dokümanlar için real-broll-capture ile 2× Retina PNG yakala, bahsedilen siteler için canlı kaydırmalı + imleçli 30 fps ekran kaydı MP4 çek, yalnızca gerçek görüntü yoksa sıfırdan AI sahne üret (SOURCES.md'ye işle).
 3. Kodla Motion Grafikler (HyperFrames): Her sahneyi HTML/CSS/GSAP/Canvas 2D ile kodla; animasyonları ve altyazıları söylediğim gerçek kelimelerin zaman damgalarına kilitle.
 4. Müzik & 3-Kanallı Gerçek SFX: Vokal frekansları oyulmuş arka plan müziği + yalnızca gerçek kayıtlı CC0/telifsiz foley SFX yerleştir (yapay bip kullanma).
 5. Görsel & Teknik Self-QA: Snapshot contact-sheet kontrolü + hyperframes check (0 hata).
@@ -1077,10 +1455,32 @@ Videoda metni birden fazla kez okudum; çekim sırasında bazı cümleleri ufak 
 - Her videoya başlamadan önce mutlaka proje kökündeki MEMORY.md dosyasını oku ve oradaki renk/font/stil kurallarına uy.
 - Kısa videolar 3 haneli numaralı klasörlerde tutulur (001-ilk-video, 002-ikinci-video, ...).
 - Türkçe büyük harflerde asla CSS text-transform: uppercase kullanma; İ, Ş, Ğ, Ü, Ö, Ç doğrudan yaz.
+- Gerçek Kaynak & Ekran Kaydı: Bahsedilen siteleri CSS ile taklit etme; real-broll-capture veya playwright-recording ile canlı yakala ve SOURCES.md içine kaydet.
 - Kurulu .agents/skills/ altındaki skill'leri senaryoya göre otomatik devreye al:
+  * Kaynak & Ekran Kaydı: real-broll-capture, playwright-recording
   * Talking-head: vox-explainer, motion-broll, object-separation, camera-3d-captions, sound-effects
   * Çeşitlilik: saas-motion-video (24 geçiş atlası, variety_audit.py)
   * Ana motorlar: hyperframes, hyperframes-cli, hyperframes-registry, ffmpeg-skill, faster-whisper`,
+        },
+        capture: {
+          file: "skills/real-broll-capture/SKILL.md",
+          text: `# real-broll-capture — 3 Katmanlı Gerçek B-Roll Skill'i
+
+1) Gerçek Kaynak Yakala (2× Retina PNG, çerez banner otomatik gizlenir):
+node skills/real-broll-capture/scripts/capture_site.mjs \\
+  --mode source \\
+  --url "https://blog.google/technology/google-deepmind/" \\
+  --out assets/sources/real-source.png \\
+  --width 540 --height 960 --dpr 2 --theme light
+
+2) Canlı Site Ekran Kaydı (kübik scroll + macOS imleç + hover + tıklama halkası -> 30fps CFR bt709 MP4):
+node skills/real-broll-capture/scripts/capture_site.mjs \\
+  --mode record \\
+  --url "https://github.com/heygen-com/hyperframes" \\
+  --out assets/sources/screen-record.mp4 \\
+  --width 540 --height 960 --dpr 2 --duration 1.8 --fps 30 --scroll-distance 580 --theme dark
+
+3) Gerçek Görüntü Yoksa: Tam ekran 9:16 AI / kodlu sahne üret ve SOURCES.md defterine işle.`,
         },
         audio: {
           file: "templates/scripts/master-audio.sh",
@@ -1142,6 +1542,13 @@ Videoda metni birden fazla kez okudum; çekim sırasında bazı cümleleri ufak 
         );
       });
 
+      document.getElementById("copy-broll-btn").addEventListener("click", () => {
+        copyText(
+          `node skills/real-broll-capture/scripts/capture_site.mjs --mode source --url "https://blog.google/technology/google-deepmind/" --out assets/sources/real-source.png --theme light\nnode skills/real-broll-capture/scripts/capture_site.mjs --mode record --url "https://github.com/heygen-com/hyperframes" --out assets/sources/screen-record.mp4 --duration 2.0 --scroll-distance 600 --theme dark`,
+          "B-Roll yakalama komutları kopyalandı ✓"
+        );
+      });
+
       let currentCat = "all";
       let currentQuery = "";
       const reposGrid = document.getElementById("repos-grid");
@@ -1161,7 +1568,7 @@ Videoda metni birden fazla kez okudum; çekim sırasında bazı cümleleri ufak 
         reposGrid.innerHTML = filtered
           .map(
             (r) => `
-          <article class="repo-card">
+          <article class="repo-card${r.highlight ? " repo-new" : ""}">
             <div>
               <div class="repo-head">
                 <div class="repo-name">${r.name}</div>
@@ -1169,7 +1576,7 @@ Videoda metni birden fazla kez okudum; çekim sırasında bazı cümleleri ufak 
               </div>
               <p class="repo-desc">${r.desc}</p>
               <div class="step-pills" style="margin-top: 12px">
-                ${r.skills.map((s) => `<span class="pill">/${s}</span>`).join("")}
+                ${r.skills.map((s) => `<span class="pill${r.highlight ? " pill-accent" : ""}">/${s}</span>`).join("")}
               </div>
             </div>
             <a class="repo-link" href="${r.url}" target="_blank" rel="noopener">

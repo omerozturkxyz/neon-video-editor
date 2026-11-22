@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ==============================================================================
-# Gemini Neon Video Edit Sistemi — 10 Açık Kaynak Motion Reposu + 20 Skill Kurucu
+# Neon Video Editor — 11 Açık Kaynak Motion & Capture Reposu + 22 Skill Kurucu
 # Kullanım:
 #   ./install-skills.sh            -> .agents/skills/ altına bağlar (Antigravity / Codex / Gemini)
 #   ./install-skills.sh --claude   -> hem .agents/skills/ hem .claude/skills/ altına bağlar
@@ -30,7 +30,7 @@ if [ "$LINK_CLAUDE" = true ]; then
   mkdir -p "$CLAUDE_SKILLS_DIR"
 fi
 
-echo "✦ Gemini Neon Video Edit Sistemi — Skill Kurulumu Başlıyor"
+echo "✦ Neon Video Editor — Skill Kurulumu Başlıyor"
 echo "  Hedef klasör: $ROOT_DIR"
 echo ""
 
@@ -58,10 +58,11 @@ clone_or_update() {
   fi
 }
 
-# 10 Açık Kaynak Motion & Video Skill Reposu
+# 11 Açık Kaynak Motion, Screen Recording & Video Skill Reposu
 clone_or_update "saas-motion-kit"              "https://github.com/tugrawork-creator/saas-motion-kit.git"
 clone_or_update "hyperframes-community-skills" "https://github.com/heygen-com/hyperframes-community-skills.git"
 clone_or_update "motion-graphics"              "https://github.com/Barty-Bart/motion-graphics.git"
+clone_or_update "claude-code-video-toolkit"    "https://github.com/digitalsamba/claude-code-video-toolkit.git"
 clone_or_update "brag"                         "https://github.com/latent-spaces/brag.git"
 clone_or_update "lemo-opuscar"                 "https://github.com/lemomo-ai/lemo-opuscar.git"
 clone_or_update "product-launch-motion"        "https://github.com/AbubakrChan/product-launch-motion.git"
@@ -87,9 +88,28 @@ link_skill() {
   echo "  ✓ Skill bağlandı: $skill_name"
 }
 
-echo ""
-echo "🔗 20 Workspace Skill'i bağlanıyor..."
+link_local_skill() {
+  local skill_name="$1"
+  local rel_source="$2"
+  local abs_source="$ROOT_DIR/$rel_source"
 
+  if [ ! -f "$abs_source/SKILL.md" ]; then
+    echo "  ! Yerel SKILL.md bulunamadı, atlandı: $skill_name ($rel_source)"
+    return
+  fi
+
+  ln -sfn "../../$rel_source" "$AGENTS_SKILLS_DIR/$skill_name"
+  if [ "$LINK_CLAUDE" = true ]; then
+    ln -sfn "../../$rel_source" "$CLAUDE_SKILLS_DIR/$skill_name"
+  fi
+  echo "  ✓ Yerel dahili skill bağlandı: $skill_name"
+}
+
+echo ""
+echo "🔗 22 Workspace Skill'i bağlanıyor (dahili real-broll-capture + playwright-recording dahil)..."
+
+link_local_skill "real-broll-capture" "skills/real-broll-capture"
+link_skill "playwright-recording"  "claude-code-video-toolkit/.claude/skills/playwright-recording"
 link_skill "saas-motion-video"     "saas-motion-kit/.claude/skills/saas-motion-video"
 link_skill "vox-explainer"         "hyperframes-community-skills/skills/vox-explainer"
 link_skill "camera-3d-captions"    "hyperframes-community-skills/skills/camera-3d-captions"
@@ -112,7 +132,7 @@ link_skill "rea-video"             "rea-video/skills/rea-video"
 link_skill "snapcn"                "snapcn/skills/snapcn"
 
 echo ""
-echo "✅ Tamamlandı! 20 skill .agents/skills/ altına bağlandı."
+echo "✅ Tamamlandı! 22 skill .agents/skills/ altına bağlandı."
 if [ "$LINK_CLAUDE" = true ]; then
   echo "✅ Ayrıca .claude/skills/ altına da bağlandı."
 fi
@@ -120,4 +140,5 @@ echo ""
 echo "Sonraki adımlar:"
 echo "  1. templates/AGENTS.md ve templates/MEMORY.md dosyalarını kendi markana göre düzenleyip proje köküne kopyala."
 echo "  2. Ana motorları kur: https://github.com/heygen-com/hyperframes ve https://github.com/kajisho5/ffmpeg-skill"
-echo "  3. templates/prompts/neon-edit-prompt.md içindeki ana prompt'u AI ajanına vererek ilk videonu üret!"
+echo "  3. Gerçek web kaynakları & canlı ekran kayıtları için skills/real-broll-capture/scripts/capture_site.mjs kullan."
+echo "  4. templates/prompts/neon-edit-prompt.md içindeki ana prompt'u AI ajanına vererek ilk videonu üret!"
